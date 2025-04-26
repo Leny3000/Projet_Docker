@@ -1,7 +1,7 @@
 <?php
-include_once 'controllers/CommandeController.php';
+include_once 'controllers/ProjetController.php';
 
-$controller = new CommandeController();
+$controller = new projetController();
 
 $action = isset($_GET['action']) ? $_GET['action'] : 'index';
 $id = isset($_GET['id']) ? $_GET['id'] : null;

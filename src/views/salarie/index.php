@@ -8,26 +8,26 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.php">Application Docker</a>
+                <a class="navbar-brand" href="index.php">Application DM</a>
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="index.php">Accueil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="client.php">Clients</a>
+                            <a class="nav-link active" href="salarie.php">Salariés</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="commande.php">Commandes</a>
+                            <a class="nav-link" href="projet.php">Projets</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
 
-        <h1 class="my-4">Liste des clients</h1>
+        <h1 class="my-4">Liste des salariés</h1>
         
-        <a href="client.php?action=create" class="btn btn-primary mb-3">Ajouter un client</a>
+        <a href="client.php?action=create" class="btn btn-primary mb-3">Ajouter un salarié</a>
         
         <table class="table table-striped">
             <thead>
@@ -41,17 +41,17 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($clients as $client): ?>
+                <?php foreach($salaries as $salarie): ?>
                 <tr>
-                    <td><?= $client['id'] ?></td>
-                    <td><?= $client['nom'] ?></td>
-                    <td><?= $client['prenom'] ?></td>
-                    <td><?= $client['email'] ?></td>
-                    <td><?= $client['date_inscription'] ?></td>
+                    <td><?= $salarie['id'] ?></td>
+                    <td><?= $salarie['nom'] ?></td>
+                    <td><?= $salarie['prenom'] ?></td>
+                    <td><?= $salaire['email'] ?></td>
+                    <td><?= $salarie['date_inscription'] ?></td>
                     <td>
-                        <a href="client.php?action=show&id=<?= $client['id'] ?>" class="btn btn-sm btn-info">Voir</a>
-                        <a href="client.php?action=edit&id=<?= $client['id'] ?>" class="btn btn-sm btn-warning">Modifier</a>
-                        <a href="client.php?action=delete&id=<?= $client['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr?')">Supprimer</a>
+                        <a href="salarie.php?action=show&id=<?= $salarie['id'] ?>" class="btn btn-sm btn-info">Voir</a>
+                        <a href="salarie.php?action=edit&id=<?= $salarie['id'] ?>" class="btn btn-sm btn-warning">Modifier</a>
+                        <a href="salarie.php?action=delete&id=<?= $salarie['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr?')">Supprimer</a>
                     </td>
                 </tr>
                 <?php endforeach; ?>

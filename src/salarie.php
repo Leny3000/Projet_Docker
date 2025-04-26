@@ -1,7 +1,7 @@
 <?php
-include_once 'controllers/ClientController.php';
+include_once 'controllers/SalarieController.php';
 
-$controller = new ClientController();
+$controller = new salarieController();
 
 $action = isset($_GET['action']) ? $_GET['action'] : 'index';
 $id = isset($_GET['id']) ? $_GET['id'] : null;

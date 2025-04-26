@@ -8,30 +8,30 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.php">Application Docker</a>
+                <a class="navbar-brand" href="index.php">Application DM</a>
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="index.php">Accueil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="client.php">Clients</a>
+                            <a class="nav-link active" href="salarie.php">Salariés</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="commande.php">Commandes</a>
+                            <a class="nav-link" href="projet.php">Projets</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
         
-        <h1 class="my-4">Modifier un client</h1>
+        <h1 class="my-4">Modifier un salarie</h1>
         
         <?php if(isset($error)): ?>
             <div class="alert alert-danger"><?= $error ?></div>
         <?php endif; ?>
         
-        <form method="post" action="client.php?action=edit&id=<?= $this->client->id ?>">
+        <form method="post" action="salarie.php?action=edit&id=<?= $this->salarie->id ?>">
             <div class="mb-3">
                 <label for="nom" class="form-label">Nom</label>
                 <input type="text" class="form-control" id="nom" name="nom" value="<?= $this->client->nom ?>" required>
@@ -49,7 +49,7 @@
                 <input type="date" class="form-control" id="date_inscription" name="date_inscription" value="<?= $this->client->date_inscription ?>" required>
             </div>
             <button type="submit" class="btn btn-primary">Enregistrer</button>
-            <a href="client.php" class="btn btn-secondary">Annuler</a>
+            <a href="salarie.php" class="btn btn-secondary">Annuler</a>
         </form>
     </div>
 </body>

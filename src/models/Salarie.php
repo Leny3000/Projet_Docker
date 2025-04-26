@@ -1,7 +1,7 @@
 <?php
-class Client {
+class Salarie {
     private $conn;
-    private $table_name = "clients";
+    private $table_name = "salaries";
     
     public $id;
     public $nom;
@@ -13,7 +13,7 @@ class Client {
         $this->conn = $db;
     }
     
-    // Récupérer tous les clients
+    // Récupérer tous les salariés
     public function read() {
         $query = "SELECT * FROM " . $this->table_name . " ORDER BY nom";
         $stmt = $this->conn->prepare($query);
@@ -21,7 +21,7 @@ class Client {
         return $stmt;
     }
     
-    // Récupérer un client par son ID
+    // Récupérer un salarié par son ID
     public function readOne() {
         $query = "SELECT * FROM " . $this->table_name . " WHERE id = ?";
         $stmt = $this->conn->prepare($query);
@@ -39,7 +39,7 @@ class Client {
         return false;
     }
     
-    // Créer un nouveau client
+    // Créer un nouveau salarié
     public function create() {
         $query = "INSERT INTO " . $this->table_name . " 
                  (nom, prenom, email, date_inscription) 
@@ -60,7 +60,7 @@ class Client {
         return false;
     }
     
-    // Mettre à jour un client
+    // Mettre à jour un salarié
     public function update() {
         $query = "UPDATE " . $this->table_name . " 
                  SET nom = ?, prenom = ?, email = ?, date_inscription = ? 
@@ -77,7 +77,7 @@ class Client {
         return $stmt->execute();
     }
     
-    // Supprimer un client
+    // Supprimer un salarié
     public function delete() {
         $query = "DELETE FROM " . $this->table_name . " WHERE id = ?";
         
