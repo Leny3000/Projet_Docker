@@ -15,6 +15,10 @@ class SalarieController {
         echo json_encode($stmt->fetch(PDO::FETCH_ASSOC));
     }
 
+    public function index() {
+        $this->getAll(); // On renvoie tous les salariés par défaut
+    }
+    
     public function create($data) {
         $db = Database::connect();
         $stmt = $db->prepare("INSERT INTO salaries (nom, prenom, email) VALUES (?, ?, ?)");
