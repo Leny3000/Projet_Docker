@@ -1,38 +1,45 @@
-version: '3'
+version: '3.8'
 
 services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: gestion_stock
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/mysql:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+
   php:
-    build:
-      context: ./docker/php
-    container_name: Leny_php
+    build: .
+    container_name: php
     volumes:
       - ./src:/var/www/html
     ports:
       - "8080:80"
-    depends_on:
-      - mysql
     networks:
-      - app_network
-      
-  mysql:
-    image: mysql:8.0
-    container_name: Leny_mysql
+      - app-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: Leny_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-    volumes:
-      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - mysql_data:/var/lib/mysql
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: rootpass
     ports:
-      - "3306:3306"
+      - "8081:80"
     networks:
-      - app_network
+      - app-network
 
 networks:
-  app_network:
+  app-network:
     driver: bridge
-    
-volumes:
-  mysql_data: 
