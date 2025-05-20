@@ -4,36 +4,39 @@ CREATE TABLE IF NOT EXISTS salaries (
     'nom' VARCHAR(100) NOT NULL,
     'prenom' VARCHAR(100) NOT NULL,
     'email' VARCHAR(100),
+    'role' VARCHAR(100),
     'date_inscription' DATE
 );
 
 -- Création de la table projets
 CREATE TABLE IF NOT EXISTS projets (
     'id' INT AUTO_INCREMENT PRIMARY KEY,
+    'salarie_id' INT,
     'nom' VARCHAR(100) NOT NULL,
     'objectif' VARCHAR(255),
     'date_debut' DATE,
     'date_fin' DATE
+    FOREIGN KEY ('salarie_id') REFERENCES salaries('id'),
 );
 
 
 -- Table d'association projet <-> salarié
-CREATE TABLE IF NOT EXISTS projet_salarie (
-    'id' INT AUTO_INCREMENT PRIMARY KEY,
-    'projet_id' INT,
-    'salarie_id' INT,
-    'role' VARCHAR(100),
-    'date_affectation' DATE,
-    FOREIGN KEY ('projet_id') REFERENCES projets('id'),
-    FOREIGN KEY ('salarie_id') REFERENCES salaries('id')
-);
+-- CREATE TABLE IF NOT EXISTS projet_salarie (
+--     'id' INT AUTO_INCREMENT PRIMARY KEY,
+--     'projet_id' INT,
+--     'salarie_id' INT,
+--     'role' VARCHAR(100),
+--     'date_affectation' DATE,
+--     FOREIGN KEY ('projet_id') REFERENCES projets('id'),
+--     FOREIGN KEY ('salarie_id') REFERENCES salaries('id')
+-- );
 
 -- Insertion de salariés
-INSERT INTO salaries ('nom', 'prenom', 'email') VALUES
-('Durand', 'Alice', 'alice.durand@email.com'),
-('Petit', 'Marc', 'marc.petit@email.com'),
-('Bernard', 'Claire', 'claire.bernard@email.com'),
-('Robert', 'Luc', 'luc.robert@email.com');
+INSERT INTO salaries ('nom', 'prenom', 'email', 'rôle', 'date_inscription') VALUES
+('Durand', 'Alice', 'alice.durand@email.com', 'Chef de projet', '2024-01-20'),
+('Petit', 'Marc', 'marc.petit@email.com', 'DevOps', '2024-01-22'),
+('Bernard', 'Claire', 'claire.bernard@email.com', 'Designer UI/UX', '2024-02-03'),
+('Robert', 'Luc', 'luc.robert@email.com', 'Développeur mobile', '2024-03-12');
 
 -- Insertion de projets
 INSERT INTO projets ('nom', 'objectif', 'date_debut', 'date_fin') VALUES
@@ -43,9 +46,9 @@ INSERT INTO projets ('nom', 'objectif', 'date_debut', 'date_fin') VALUES
 
 
 -- Affectation des salariés aux projets
-INSERT INTO projet_salarie ('projet_id', 'salarie_id', 'role', 'date_affectation') VALUES
-(1, 1, 'Chef de projet', '2024-01-20'),
-(1, 2, 'DevOps', '2024-01-22'),
-(2, 3, 'Designer UI/UX', '2024-02-03'),
-(3, 2, 'Développeur mobile', '2024-03-12'),
-(3, 4, 'Testeur QA', '2024-03-14');
+-- INSERT INTO projet_salarie ('projet_id', 'salarie_id', 'role', 'date_affectation') VALUES
+-- (1, 1, 'Chef de projet', '2024-01-20'),
+-- (1, 2, 'DevOps', '2024-01-22'),
+-- (2, 3, 'Designer UI/UX', '2024-02-03'),
+-- (3, 2, 'Développeur mobile', '2024-03-12'),
+-- (3, 4, 'Testeur QA', '2024-03-14');

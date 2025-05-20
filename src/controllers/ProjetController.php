@@ -1,93 +1,108 @@
 <?php
-require_once __DIR__ . '/../config/Database.php';
+include_once 'config/Database.php';
+include_once 'models/Projet.php';
+include_once 'models/Salarie.php';
 
 class ProjetController {
-
-    private function sendJson($data, $statusCode = 200) {
-        http_response_code($statusCode);
-        header('Content-Type: application/json');
-        echo json_encode($data);
+    private $projet;
+    private $salarie;
+    private $db;
+    
+    public function __construct() {
+        $database = new Database();
+        $this->db = $database->getConnection();
+        $this->projet = new Projet($this->db);
+        $this->salarie = new Salarie($this->db);
     }
-
-    public function getAll() {
-        try {
-            $db = Database::connect();
-            $stmt = $db->query("SELECT * FROM projets");
-            $this->sendJson($stmt->fetchAll(PDO::FETCH_ASSOC));
-        } catch (PDOException $e) {
-            $this->sendJson(['error' => 'Erreur lors de la récupération : ' . $e->getMessage()], 500);
-        }
-    }
-
-    public function getOne($id) {
-        try {
-            $db = Database::connect();
-            $stmt = $db->prepare("SELECT * FROM projets WHERE id = ?");
-            $stmt->execute([$id]);
-            $projet = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($projet) {
-                $this->sendJson($projet);
-            } else {
-                $this->sendJson(['error' => 'Projet non trouvé'], 404);
-            }
-        } catch (PDOException $e) {
-            $this->sendJson(['error' => 'Erreur lors de la récupération : ' . $e->getMessage()], 500);
-        }
-    }
-
+    
+    // Afficher la liste des projets
     public function index() {
-        $this->getAll(); // Affiche tous les projets par défaut
+        $stmt = $this->projet->read();
+        $projets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        include_once 'views/projet/index.php';
     }
-
-    public function create($data) {
-        try {
-            if (!isset($data['nom'], $data['objectif'], $data['date_debut'], $data['date_fin'])) {
-                return $this->sendJson(['error' => 'Données manquantes'], 400);
+    
+    // Afficher le formulaire de création
+    public function create() {
+        // Récupérer la liste des salarés pour le select
+        $stmt = $this->salarie->read();
+        $salaries = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Si le formulaire est soumis
+        if($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Récupérer et valider les données du formulaire
+            $this->projet->salarie_id = htmlspecialchars(strip_tags($_POST['salarie_id']));
+            $this->projet->nom = htmlspecialchars(strip_tags($_POST['nom']));
+            $this->projet->objectif = htmlspecialchars(strip_tags($_POST['objectif']));
+            $this->projet->date_debut = htmlspecialchars(strip_tags($_POST['date_debut']));
+            $this->projet->date_fin = htmlspecialchars(strip_tags($_POST['date_fin']));
+            
+            // Créer le projet
+            if($this->projet->create()) {
+                header('Location: projet.php');
+                exit;
+            } else {
+                $error = "Une erreur est survenue lors de la création du projet.";
             }
-
-            $db = Database::connect();
-            $stmt = $db->prepare("INSERT INTO projets (nom, objectif, date_debut, date_fin) VALUES (?, ?, ?, ?)");
-            $stmt->execute([
-                $data['nom'],
-                $data['objectif'],
-                $data['date_debut'],
-                $data['date_fin']
-            ]);
-            $this->sendJson(['message' => 'Projet créé avec succès'], 201);
-        } catch (PDOException $e) {
-            $this->sendJson(['error' => 'Erreur lors de la création : ' . $e->getMessage()], 500);
+        }
+        
+        include_once 'views/projet/create.php';
+    }
+    
+    // Afficher les détails d'un projet
+    public function show($id) {
+        $this->projet->id = $id;
+        if($this->projet->readOne()) {
+            include_once 'views/projet/show.php';
+        } else {
+            echo "Projet non trouvé.";
         }
     }
-
-    public function update($id, $data) {
-        try {
-            if (!isset($data['nom'], $data['objectif'], $data['date_debut'], $data['date_fin'])) {
-                return $this->sendJson(['error' => 'Données manquantes'], 400);
+    
+    // Afficher et traiter le formulaire de modification
+    public function edit($id) {
+        $this->projet->id = $id;
+        
+        // Récupérer la liste des salariés pour le select
+        $stmt = $this->salarie->read();
+        $salaries = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Si le formulaire est soumis
+        if($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Récupérer et valider les données du formulaire
+            $this->projet->salarie_id = htmlspecialchars(strip_tags($_POST['salarie_id']));
+            $this->projet->nom = htmlspecialchars(strip_tags($_POST['nom']));
+            $this->projet->objectif = htmlspecialchars(strip_tags($_POST['objectif']));
+            $this->projet->date_debut = htmlspecialchars(strip_tags($_POST['date_debut']));
+            $this->projet->date_fin = htmlspecialchars(strip_tags($_POST['date_fin']));
+            
+            // Mettre à jour le projet
+            if($this->projet->update()) {
+                header('Location: projet.php');
+                exit;
+            } else {
+                $error = "Une erreur est survenue lors de la mise à jour du projet.";
             }
-
-            $db = Database::connect();
-            $stmt = $db->prepare("UPDATE projets SET nom = ?, objectif = ?, date_debut = ?, date_fin = ? WHERE id = ?");
-            $stmt->execute([
-                $data['nom'],
-                $data['objectif'],
-                $data['date_debut'],
-                $data['date_fin'],
-                $id
-            ]);
-            $this->sendJson(['message' => 'Projet mis à jour avec succès']);
-        } catch (PDOException $e) {
-            $this->sendJson(['error' => 'Erreur lors de la mise à jour : ' . $e->getMessage()], 500);
+        } else {
+            // Charger les données du projet
+            if(!$this->projet->readOne()) {
+                echo "Projet non trouvé.";
+                return;
+            }
         }
+        
+        include_once 'views/projet/edit.php';
     }
-
+    
+    // Supprimer un projet
     public function delete($id) {
-        try {
-            $db = Database::connect();
-            $stmt = $db->prepare("DELETE FROM projets WHERE id = ?");
-            $stmt->execute([$id]);
-            $this->sendJson(['message' => 'Projet supprimé avec succès']);
-        } catch (PDOException $e) {
-            $this->sendJson(['error' => 'Erreur lors de la suppression : ' . $e->getMessage()], 500);
+        $this->projet->id = $id;
+        
+        if($this->projet->delete()) {
+            header('Location: projet.php');
+            exit;
+        } else {
+            echo "Une erreur est survenue lors de la suppression du projet.";
         }
     }
 }

@@ -7,6 +7,7 @@ class Salarie {
     public $nom;
     public $prenom;
     public $email;
+    public $role;
     public $date_inscription;
     
     public function __construct($db) {
@@ -33,6 +34,7 @@ class Salarie {
             $this->nom = $row['nom'];
             $this->prenom = $row['prenom'];
             $this->email = $row['email'];
+            $this->role = $row['role'];
             $this->date_inscription = $row['date_inscription'];
             return true;
         }
@@ -42,8 +44,8 @@ class Salarie {
     // Créer un nouveau salarié
     public function create() {
         $query = "INSERT INTO " . $this->table_name . " 
-                 (nom, prenom, email, date_inscription) 
-                 VALUES (?, ?, ?, ?)";
+                 (nom, prenom, email, role, date_inscription) 
+                 VALUES (?, ?, ?, ?, ?)";
         
         $stmt = $this->conn->prepare($query);
         
@@ -51,7 +53,8 @@ class Salarie {
         $stmt->bindParam(1, $this->nom);
         $stmt->bindParam(2, $this->prenom);
         $stmt->bindParam(3, $this->email);
-        $stmt->bindParam(4, $this->date_inscription);
+        $stmt->bindParam(4, $this->role);
+        $stmt->bindParam(5, $this->date_inscription);
         
         if($stmt->execute()) {
             $this->id = $this->conn->lastInsertId();
@@ -63,7 +66,7 @@ class Salarie {
     // Mettre à jour un salarié
     public function update() {
         $query = "UPDATE " . $this->table_name . " 
-                 SET nom = ?, prenom = ?, email = ?, date_inscription = ? 
+                 SET nom = ?, prenom = ?, email = ?, role = ?, date_inscription = ? 
                  WHERE id = ?";
         
         $stmt = $this->conn->prepare($query);
@@ -71,8 +74,9 @@ class Salarie {
         $stmt->bindParam(1, $this->nom);
         $stmt->bindParam(2, $this->prenom);
         $stmt->bindParam(3, $this->email);
-        $stmt->bindParam(4, $this->date_inscription);
-        $stmt->bindParam(5, $this->id);
+        $stmt->bindParam(4, $this->role);
+        $stmt->bindParam(5, $this->date_inscription);
+        $stmt->bindParam(6, $this->id);
         
         return $stmt->execute();
     }

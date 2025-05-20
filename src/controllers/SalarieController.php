@@ -1,82 +1,96 @@
 <?php
-require_once __DIR__ . '/../config/Database.php';
+include_once 'config/Database.php';
+include_once 'models/Salarie.php';
 
 class SalarieController {
-
-    private function sendJson($data, $statusCode = 200) {
-        http_response_code($statusCode);
-        header('Content-Type: application/json');
-        echo json_encode($data);
+    private $salarie;
+    private $db;
+    
+    public function __construct() {
+        $database = new Database();
+        $this->db = $database->getConnection();
+        $this->salarie = new Salarie($this->db);
     }
-
-    public function getAll() {
-        try {
-            $db = Database::connect();
-            $stmt = $db->query("SELECT * FROM salaries");
-            $this->sendJson($stmt->fetchAll(PDO::FETCH_ASSOC));
-        } catch (PDOException $e) {
-            $this->sendJson(['error' => 'Erreur de récupération : ' . $e->getMessage()], 500);
-        }
-    }
-
-    public function getOne($id) {
-        try {
-            $db = Database::connect();
-            $stmt = $db->prepare("SELECT * FROM salaries WHERE id = ?");
-            $stmt->execute([$id]);
-            $salarie = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($salarie) {
-                $this->sendJson($salarie);
-            } else {
-                $this->sendJson(['error' => 'Salarié non trouvé'], 404);
-            }
-        } catch (PDOException $e) {
-            $this->sendJson(['error' => 'Erreur de récupération : ' . $e->getMessage()], 500);
-        }
-    }
-
+    
+    // Afficher la liste des salariés
     public function index() {
-        $this->getAll(); // Par défaut, on affiche tous les salariés
+        $stmt = $this->salarie->read();
+        $salaries = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        include_once 'views/salarie/index.php';
     }
-
-    public function create($data) {
-        try {
-            if (!isset($data['nom'], $data['prenom'], $data['email'])) {
-                return $this->sendJson(['error' => 'Données manquantes'], 400);
+    
+    // Afficher le formulaire de création
+    public function create() {
+        // Si le formulaire est soumis
+        if($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Récupérer et valider les données du formulaire
+            $this->salarie->nom = htmlspecialchars(strip_tags($_POST['nom']));
+            $this->salarie->prenom = htmlspecialchars(strip_tags($_POST['prenom']));
+            $this->salarie->email = htmlspecialchars(strip_tags($_POST['email']));
+            $this->salarie->role = htmlspecialchars(strip_tags($_POST['role']));
+            $this->salarie->date_inscription = htmlspecialchars(strip_tags($_POST['date_inscription']));
+            
+            // Créer le client
+            if($this->client->create()) {
+                header('Location: client.php');
+                exit;
+            } else {
+                $error = "Une erreur est survenue lors de la création du client.";
             }
-
-            $db = Database::connect();
-            $stmt = $db->prepare("INSERT INTO salaries (nom, prenom, email) VALUES (?, ?, ?)");
-            $stmt->execute([$data['nom'], $data['prenom'], $data['email']]);
-            $this->sendJson(['message' => 'Salarié créé avec succès'], 201);
-        } catch (PDOException $e) {
-            $this->sendJson(['error' => 'Erreur de création : ' . $e->getMessage()], 500);
+        }
+        
+        include_once 'views/client/create.php';
+    }
+    
+    // Afficher les détails d'un client
+    public function show($id) {
+        $this->client->id = $id;
+        if($this->client->readOne()) {
+            include_once 'views/client/show.php';
+        } else {
+            echo "Client non trouvé.";
         }
     }
-
-    public function update($id, $data) {
-        try {
-            if (!isset($data['nom'], $data['prenom'], $data['email'])) {
-                return $this->sendJson(['error' => 'Données manquantes'], 400);
+    
+    // Afficher et traiter le formulaire de modification
+    public function edit($id) {
+        $this->client->id = $id;
+        
+        // Si le formulaire est soumis
+        if($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Récupérer et valider les données du formulaire
+            $this->client->nom = htmlspecialchars(strip_tags($_POST['nom']));
+            $this->client->prenom = htmlspecialchars(strip_tags($_POST['prenom']));
+            $this->client->email = htmlspecialchars(strip_tags($_POST['email']));
+            $this->client->date_inscription = htmlspecialchars(strip_tags($_POST['date_inscription']));
+            
+            // Mettre à jour le salarié
+            if($this->salarie->update()) {
+                header('Location: salarie.php');
+                exit;
+            } else {
+                $error = "Une erreur est survenue lors de la mise à jour du salarié.";
             }
-
-            $db = Database::connect();
-            $stmt = $db->prepare("UPDATE salaries SET nom = ?, prenom = ?, email = ? WHERE id = ?");
-            $stmt->execute([$data['nom'], $data['prenom'], $data['email'], $id]);
-            $this->sendJson(['message' => 'Salarié mis à jour avec succès']);
-        } catch (PDOException $e) {
-            $this->sendJson(['error' => 'Erreur de mise à jour : ' . $e->getMessage()], 500);
+        } else {
+            // Charger les données du salarié
+            if(!$this->salarie->readOne()) {
+                echo "Salarié non trouvé.";
+                return;
+            }
         }
+        
+        include_once 'views/salarie/edit.php';
     }
-
+    
+    // Supprimer un salarié
     public function delete($id) {
-        try {
-            $db = Database::connect();
-            $stmt = $db->prepare("DELETE FROM salaries WHERE id = ?");
-            $stmt->execute([$id]);
-            $this->sendJson(['message' => 'Salarié supprimé avec succès']);
-        } catch (PDOException $e) {
-            $this->sendJson(['error' => 'Erreur de suppression : ' . $e->getMessage()], 500);
+        $this->salarie->id = $id;
+        
+        if($this->salarie->delete()) {
+            header('Location: salarie.php');
+            exit;
+        } else {
+            echo "Une erreur est survenue lors de la suppression du salarié.";
         }
     }
 }
