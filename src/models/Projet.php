@@ -9,12 +9,25 @@ class Projet {
     public $objectif;
     public $date_debut;
     public $date_fin;
-    
+
     public function __construct($db) {
+        if ($db === null) {
+            throw new Exception("Connexion à la base de données non initialisée.");
+        }
         $this->conn = $db;
     }
-    
-    // Récupérer touts les projets avec infos salarié
+
+    private function isValid() {
+        return !empty($this->salarie_id) && !empty($this->objectif)
+            && $this->isValidDate($this->date_debut)
+            && $this->isValidDate($this->date_fin);
+    }
+
+    private function isValidDate($date) {
+        $d = DateTime::createFromFormat('Y-m-d', $date);
+        return $d && $d->format('Y-m-d') === $date;
+    }
+
     public function read() {
         $query = "SELECT c.nom, c.prenom, o.id, o.salarie_id, o.objectif, o.date_debut, o.date_fin 
                   FROM " . $this->table_name . " o
@@ -24,8 +37,7 @@ class Projet {
         $stmt->execute();
         return $stmt;
     }
-    
-    // Récupérer un projet par son ID
+
     public function readOne() {
         $query = "SELECT c.nom, c.prenom, o.id, o.salarie_id, o.objectif, o.date_debut, o.date_fin 
                   FROM " . $this->table_name . " o
@@ -34,9 +46,9 @@ class Projet {
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1, $this->id);
         $stmt->execute();
-        
+
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if($row) {
+        if ($row) {
             $this->salarie_id = $row['salarie_id'];
             $this->objectif = $row['objectif'];
             $this->date_debut = $row['date_debut'];
@@ -45,64 +57,78 @@ class Projet {
         }
         return false;
     }
-    
-    // Créer un nouveau projet
+
     public function create() {
+        if (!$this->isValid()) {
+            error_log("Validation échouée (Projet::create)");
+            return false;
+        }
+
         $query = "INSERT INTO " . $this->table_name . " 
-                 (salarie_id, objectif, date_debut, date_fin) 
-                 VALUES (?, ?, ?, ?)";
-        
+                  (salarie_id, objectif, date_debut, date_fin) 
+                  VALUES (?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
-        
+
         $stmt->bindParam(1, $this->salarie_id);
         $stmt->bindParam(2, $this->objectif);
         $stmt->bindParam(3, $this->date_debut);
         $stmt->bindParam(4, $this->date_fin);
-        
-        if($stmt->execute()) {
+
+        if ($stmt->execute()) {
             $this->id = $this->conn->lastInsertId();
             return true;
+        } else {
+            error_log("Erreur SQL (Projet::create) : " . implode(", ", $stmt->errorInfo()));
+            return false;
         }
-        return false;
     }
-    
-    // Mettre à jour un projet
+
     public function update() {
+        if (!$this->isValid()) {
+            error_log("Validation échouée (Projet::update)");
+            return false;
+        }
+
         $query = "UPDATE " . $this->table_name . " 
                  SET salarie_id = ?, objectif = ?, date_debut = ?, date_fin = ? 
                  WHERE id = ?";
-        
         $stmt = $this->conn->prepare($query);
-        
+
         $stmt->bindParam(1, $this->salarie_id);
         $stmt->bindParam(2, $this->objectif);
         $stmt->bindParam(3, $this->date_debut);
         $stmt->bindParam(4, $this->date_fin);
         $stmt->bindParam(5, $this->id);
-        
-        return $stmt->execute();
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            error_log("Erreur SQL (Projet::update) : " . implode(", ", $stmt->errorInfo()));
+            return false;
+        }
     }
-    
-    // Supprimer un projet
+
     public function delete() {
         $query = "DELETE FROM " . $this->table_name . " WHERE id = ?";
-        
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1, $this->id);
-        
-        return $stmt->execute();
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            error_log("Erreur SQL (Projet::delete) : " . implode(", ", $stmt->errorInfo()));
+            return false;
+        }
     }
-    
-    // Récupérer les projets d'un salarié
+
     public function readByClient($salarie_id) {
         $query = "SELECT * FROM " . $this->table_name . " 
                   WHERE salarie_id = ? 
                   ORDER BY date_debut DESC";
-                  
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1, $salarie_id);
         $stmt->execute();
-        
+
         return $stmt;
     }
 }
