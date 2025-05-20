@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: gestion_stock
+      MYSQL_DATABASE: gestion_projet
       MYSQL_USER: user
       MYSQL_PASSWORD: userpass
     ports:

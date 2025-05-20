@@ -1,9 +1,9 @@
 <?php
 class Database {
     private $host = 'mysql';
-    private $db_name = 'Lény_db';
+    private $db_name = 'gestion_projet';
     private $username = 'user';
-    private $password = 'password';
+    private $password = 'userpass';
     private $conn;
 
     public function getConnection() {
