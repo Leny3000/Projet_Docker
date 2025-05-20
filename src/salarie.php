@@ -1,7 +1,7 @@
 <?php
 include_once 'controllers/SalarieController.php';
 
-$controller = new salarieController();
+$controller = new SalarieController();
 
 $action = isset($_GET['action']) ? $_GET['action'] : 'index';
 $id = isset($_GET['id']) ? $_GET['id'] : null;

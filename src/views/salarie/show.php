@@ -31,6 +31,7 @@
             <div class="card-body">
                 <h5 class="card-title"><?= $this->salarie->prenom ?> <?= $this->salarie->nom ?></h5>
                 <p class="card-text"><strong>Email:</strong> <?= $this->salarie->email ?></p>
+                <p class="card-text"><strong>Rôle:</strong> <?= $this->salarie->role ?></p>
                 <p class="card-text"><strong>Date d'inscription:</strong> <?= $this->salarie->date_inscription ?></p>
                 <a href="salarie.php" class="btn btn-primary">Retour à la liste</a>
                 <a href="salarie.php?action=edit&id=<?= $this->salarie->id ?>" class="btn btn-warning">Modifier</a>

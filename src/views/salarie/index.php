@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Liste des clients</title>
+    <title>Liste des salariés</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 </head>
 <body>
@@ -36,6 +36,7 @@
                     <th>Nom</th>
                     <th>Prénom</th>
                     <th>Email</th>
+                    <th>Rôle</th>
                     <th>Date d'inscription</th>
                     <th>Actions</th>
                 </tr>
@@ -47,6 +48,7 @@
                     <td><?= $salarie['nom'] ?></td>
                     <td><?= $salarie['prenom'] ?></td>
                     <td><?= $salaire['email'] ?></td>
+                    <td><?= $salaire['role'] ?></td>
                     <td><?= $salarie['date_inscription'] ?></td>
                     <td>
                         <a href="salarie.php?action=show&id=<?= $salarie['id'] ?>" class="btn btn-sm btn-info">Voir</a>

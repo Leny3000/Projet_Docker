@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Ajouter un client</title>
+    <title>Ajouter un salarié</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 </head>
 <body>
@@ -43,6 +43,10 @@
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="role" class="form-label">Rôle</label>
+                <input type="role" class="form-control" id="role" name="role" required>
             </div>
             <div class="mb-3">
                 <label for="date_inscription" class="form-label">Date d'inscription</label>
