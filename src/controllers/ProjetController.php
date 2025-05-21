@@ -32,7 +32,7 @@ class ProjetController {
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Récupérer et valider les données du formulaire
             $this->projet->salarie_id = htmlspecialchars(strip_tags($_POST['salarie_id']));
-            $this->projet->nom = htmlspecialchars(strip_tags($_POST['nom']));
+            $this->projet->nom_projet = htmlspecialchars(strip_tags($_POST['nom_projet']));
             $this->projet->objectif = htmlspecialchars(strip_tags($_POST['objectif']));
             $this->projet->date_debut = htmlspecialchars(strip_tags($_POST['date_debut']));
             $this->projet->date_fin = htmlspecialchars(strip_tags($_POST['date_fin']));
@@ -71,7 +71,7 @@ class ProjetController {
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Récupérer et valider les données du formulaire
             $this->projet->salarie_id = htmlspecialchars(strip_tags($_POST['salarie_id']));
-            $this->projet->nom = htmlspecialchars(strip_tags($_POST['nom']));
+            $this->projet->nom_projet = htmlspecialchars(strip_tags($_POST['nom_projet']));
             $this->projet->objectif = htmlspecialchars(strip_tags($_POST['objectif']));
             $this->projet->date_debut = htmlspecialchars(strip_tags($_POST['date_debut']));
             $this->projet->date_fin = htmlspecialchars(strip_tags($_POST['date_fin']));

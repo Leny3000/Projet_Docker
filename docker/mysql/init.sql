@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS salaries (
 CREATE TABLE IF NOT EXISTS projets (
     'id' INT AUTO_INCREMENT PRIMARY KEY,
     'salarie_id' INT,
-    'nom' VARCHAR(100) NOT NULL,
+    'nom_projet' VARCHAR(100) NOT NULL,
     'objectif' VARCHAR(255),
     'date_debut' DATE,
     'date_fin' DATE

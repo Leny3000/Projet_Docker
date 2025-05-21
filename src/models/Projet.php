@@ -5,7 +5,7 @@ class Projet {
     
     public $id;
     public $salarie_id;
-    public $nom;
+    public $nom_projet;
     public $objectif;
     public $date_debut;
     public $date_fin;
@@ -18,7 +18,7 @@ class Projet {
     }
 
     private function isValid() {
-        return !empty($this->salarie_id) && !empty($this->objectif)
+        return !empty($this->salarie_id) && !empty($this->nom_projet) && !empty($this->objectif)
             && $this->isValidDate($this->date_debut)
             && $this->isValidDate($this->date_fin);
     }
@@ -29,7 +29,7 @@ class Projet {
     }
 
     public function read() {
-        $query = "SELECT c.nom, c.prenom, o.id, o.salarie_id, o.objectif, o.date_debut, o.date_fin 
+        $query = "SELECT c.nom, c.prenom, o.id, o.salarie_id, o.nom_projet, o.objectif, o.date_debut, o.date_fin 
                   FROM " . $this->table_name . " o
                   LEFT JOIN salaries c ON o.salarie_id = c.id
                   ORDER BY o.date_debut DESC";
@@ -39,7 +39,7 @@ class Projet {
     }
 
     public function readOne() {
-        $query = "SELECT c.nom, c.prenom, o.id, o.salarie_id, o.objectif, o.date_debut, o.date_fin 
+        $query = "SELECT c.nom, c.prenom, o.id, o.salarie_id, o.nom_projet, o.objectif, o.date_debut, o.date_fin 
                   FROM " . $this->table_name . " o
                   LEFT JOIN salaries c ON o.salarie_id = c.id
                   WHERE o.id = ?";
@@ -50,6 +50,7 @@ class Projet {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             $this->salarie_id = $row['salarie_id'];
+            $this->nom_projet = $row['nom_projet'];
             $this->objectif = $row['objectif'];
             $this->date_debut = $row['date_debut'];
             $this->date_fin = $row['date_fin'];
@@ -65,14 +66,15 @@ class Projet {
         }
 
         $query = "INSERT INTO " . $this->table_name . " 
-                  (salarie_id, objectif, date_debut, date_fin) 
+                  (salarie_id, nom_projet, objectif, date_debut, date_fin) 
                   VALUES (?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(1, $this->salarie_id);
-        $stmt->bindParam(2, $this->objectif);
-        $stmt->bindParam(3, $this->date_debut);
-        $stmt->bindParam(4, $this->date_fin);
+        $stmt->bindParam(2, $this->nom_projet);
+        $stmt->bindParam(3, $this->objectif);
+        $stmt->bindParam(4, $this->date_debut);
+        $stmt->bindParam(5, $this->date_fin);
 
         if ($stmt->execute()) {
             $this->id = $this->conn->lastInsertId();
@@ -90,15 +92,16 @@ class Projet {
         }
 
         $query = "UPDATE " . $this->table_name . " 
-                 SET salarie_id = ?, objectif = ?, date_debut = ?, date_fin = ? 
+                 SET salarie_id = ?, nom_projet = ?, objectif = ?, date_debut = ?, date_fin = ? 
                  WHERE id = ?";
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(1, $this->salarie_id);
-        $stmt->bindParam(2, $this->objectif);
-        $stmt->bindParam(3, $this->date_debut);
-        $stmt->bindParam(4, $this->date_fin);
-        $stmt->bindParam(5, $this->id);
+        $stmt->bindParam(2, $this->nom_projet);
+        $stmt->bindParam(3, $this->objectif);
+        $stmt->bindParam(4, $this->date_debut);
+        $stmt->bindParam(5, $this->date_fin);
+        $stmt->bindParam(6, $this->id);
 
         if ($stmt->execute()) {
             return true;

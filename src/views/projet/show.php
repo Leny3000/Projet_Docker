@@ -29,7 +29,7 @@
         
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title"><?= $this->projet->nom ?></h5>
+                <h5 class="card-title"><?= $this->projet->nom_projet ?></h5>
                 <p class="card-text"><strong>Objectif :</strong> <?= $this->projet->objectif ?></p>
                 <p class="card-text"><strong>Date du début :</strong> <?= $this->projet->date_debut ?></p>
                 <p class="card-text"><strong>Date de fin :</strong> <?= $this->projet->date_fin ?></p>

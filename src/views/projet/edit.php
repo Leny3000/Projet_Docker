@@ -37,8 +37,8 @@
                 <input type="number" class="form-control" id="salarie_id" name="salarie_id" value="<?= $this->projet->salarie_id ?>" required>
             </div>
             <div class="mb-3">
-                <label for="nom" class="form-label">Nom</label>
-                <input type="text" class="form-control" id="nom" name="nom" value="<?= $this->projet->nom ?>" required>
+                <label for="nom" class="form-label">Nom du projet</label>
+                <input type="text" class="form-control" id="nom_projet" name="nom_projet" value="<?= $this->projet->nom_projet ?>" required>
             </div>
             <div class="mb-3">
                 <label for="objectif" class="form-label">Objectif</label>

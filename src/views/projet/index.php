@@ -33,7 +33,8 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Salarié</th>
+                    <th>ID du Salarié</th>
+                    <th>Nom du projet</th>
                     <th>Objectif</th>
                     <th>Date du début</th>
                     <th>date de fin</th>
@@ -45,6 +46,7 @@
                 <tr>
                     <td><?= $projet['id'] ?></td>
                     <td><?= $projet['nom'] . ' ' . $projet['prenom'] ?></td>
+                    <td><?= $projet['nom_projet'] ?></td>
                     <td><?= $projet['objectif'] ?></td>
                     <td><?= $projet['date_debut'] ?></td>
                     <td><?= $projet['date_fin'] ?> €</td>
