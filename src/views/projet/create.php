@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Ajouter un salarié</title>
+    <title>Ajouter un projet</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 </head>
 <body>
@@ -25,35 +25,35 @@
             </div>
         </nav>
         
-        <h1 class="my-4">Ajouter un salarié</h1>
+        <h1 class="my-4">Ajouter un projet</h1>
         
         <?php if(isset($error)): ?>
             <div class="alert alert-danger"><?= $error ?></div>
         <?php endif; ?>
         
-        <form method="post" action="salarie.php?action=create">
+        <form method="post" action="projet.php?action=create">
+            <div class="mb-3">
+                <label for="salarie_id" class="form-label">ID du salarié</label>
+                <input type="number" class="form-control" id="salarie_id" name="salarie_id" required>
+            </div>
             <div class="mb-3">
                 <label for="nom" class="form-label">Nom</label>
                 <input type="text" class="form-control" id="nom" name="nom" required>
             </div>
             <div class="mb-3">
-                <label for="prenom" class="form-label">Prénom</label>
-                <input type="text" class="form-control" id="prenom" name="prenom" required>
+                <label for="objectif" class="form-label">Objectif</label>
+                <input type="text" class="form-control" id="email" name="objectif" required>
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+                <label for="date_debut" class="form-label">Date du début</label>
+                <input type="date" class="form-control" id="date_debut" name="date_debut" required>
             </div>
             <div class="mb-3">
-                <label for="role" class="form-label">Rôle</label>
-                <input type="role" class="form-control" id="role" name="role" required>
-            </div>
-            <div class="mb-3">
-                <label for="date_inscription" class="form-label">Date d'inscription</label>
-                <input type="date" class="form-control" id="date_inscription" name="date_inscription" required>
+                <label for="date_fin" class="form-label">Date de fin</label>
+                <input type="date" class="form-control" id="date_fin" name="date_fin" required>
             </div>
             <button type="submit" class="btn btn-primary">Enregistrer</button>
-            <a href="salarie.php" class="btn btn-secondary">Annuler</a>
+            <a href="projet.php" class="btn btn-secondary">Annuler</a>
         </form>
     </div>
 </body>
