@@ -47,8 +47,8 @@
                     <td><?= $salarie['id'] ?></td>
                     <td><?= $salarie['nom'] ?></td>
                     <td><?= $salarie['prenom'] ?></td>
-                    <td><?= $salaire['email'] ?></td>
-                    <td><?= $salaire['role'] ?></td>
+                    <td><?= $salarie['email'] ?></td>
+                    <td><?= $salarie['role'] ?></td>
                     <td><?= $salarie['date_inscription'] ?></td>
                     <td>
                         <a href="salarie.php?action=show&id=<?= $salarie['id'] ?>" class="btn btn-sm btn-info">Voir</a>
