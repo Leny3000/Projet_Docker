@@ -29,12 +29,12 @@
         
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title"><?= $this->projet->prenom ?> <?= $this->projet->nom ?></h5>
-                <p class="card-text"><strong>Email:</strong> <?= $this->salarie->email ?></p>
-                <p class="card-text"><strong>Rôle:</strong> <?= $this->salarie->role ?></p>
-                <p class="card-text"><strong>Date d'inscription:</strong> <?= $this->salarie->date_inscription ?></p>
+                <h5 class="card-title"><?= $this->projet->nom ?></h5>
+                <p class="card-text"><strong>Objectif :</strong> <?= $this->projet->objectif ?></p>
+                <p class="card-text"><strong>Date du début :</strong> <?= $this->projet->date_debut ?></p>
+                <p class="card-text"><strong>Date de fin :</strong> <?= $this->projet->date_fin ?></p>
                 <a href="projet.php" class="btn btn-primary">Retour à la liste</a>
-                <a href="projet.php?action=edit&id=<?= $this->salarie->id ?>" class="btn btn-warning">Modifier</a>
+                <a href="projet.php?action=edit&id=<?= $this->projet->id ?>" class="btn btn-warning">Modifier</a>
             </div>
         </div>
     </div>
