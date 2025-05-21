@@ -30,8 +30,8 @@ class SalarieController {
             $this->salarie->role = htmlspecialchars(strip_tags($_POST['role']));
             $this->salarie->date_inscription = htmlspecialchars(strip_tags($_POST['date_inscription']));
             
-            // Créer le client
-            if($this->client->create()) {
+            // Créer le salarié
+            if($this->salarie->create()) {
                 header('Location: salarie.php');
                 exit;
             } else {
@@ -42,10 +42,10 @@ class SalarieController {
         include_once 'views/salarie/create.php';
     }
     
-    // Afficher les détails d'un client
+    // Afficher les détails d'un salarié
     public function show($id) {
-        $this->client->id = $id;
-        if($this->client->readOne()) {
+        $this->salarie->id = $id;
+        if($this->salarie->readOne()) {
             include_once 'views/salarie/show.php';
         } else {
             echo "Salarié non trouvé.";
@@ -54,15 +54,16 @@ class SalarieController {
     
     // Afficher et traiter le formulaire de modification
     public function edit($id) {
-        $this->client->id = $id;
+        $this->salarie->id = $id;
         
         // Si le formulaire est soumis
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Récupérer et valider les données du formulaire
-            $this->client->nom = htmlspecialchars(strip_tags($_POST['nom']));
-            $this->client->prenom = htmlspecialchars(strip_tags($_POST['prenom']));
-            $this->client->email = htmlspecialchars(strip_tags($_POST['email']));
-            $this->client->date_inscription = htmlspecialchars(strip_tags($_POST['date_inscription']));
+            $this->salarie->nom = htmlspecialchars(strip_tags($_POST['nom']));
+            $this->salarie->prenom = htmlspecialchars(strip_tags($_POST['prenom']));
+            $this->salarie->email = htmlspecialchars(strip_tags($_POST['email']));
+            $this->salarie->role = htmlspecialchars(strip_tags($_POST['role']));
+            $this->salarie->date_inscription = htmlspecialchars(strip_tags($_POST['date_inscription']));
             
             // Mettre à jour le salarié
             if($this->salarie->update()) {
