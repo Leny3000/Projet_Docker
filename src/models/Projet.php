@@ -67,7 +67,7 @@ class Projet {
 
         $query = "INSERT INTO " . $this->table_name . " 
                   (salarie_id, nom_projet, objectif, date_debut, date_fin) 
-                  VALUES (?, ?, ?, ?)";
+                  VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(1, $this->salarie_id);
