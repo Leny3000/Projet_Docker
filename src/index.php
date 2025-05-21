@@ -27,7 +27,7 @@
         
         <div class="jumbotron my-4 p-4 bg-light">
             <h1>Bienvenue dans l'application DM</h1>
-            <p class="lead">Cette application démontre l'utilisation de Docker pour la gestion des projets.</p>
+            <p class="lead">Cette application démontre l'utilisation de Docker pour la gestion des projets et des salariés.</p>
         </div>
         
         <div class="row">
