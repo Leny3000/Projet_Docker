@@ -49,7 +49,7 @@
                     <td><?= $projet['nom_projet'] ?></td>
                     <td><?= $projet['objectif'] ?></td>
                     <td><?= $projet['date_debut'] ?></td>
-                    <td><?= $projet['date_fin'] ?> €</td>
+                    <td><?= $projet['date_fin'] ?></td>
                     <td>
                         <a href="projet.php?action=show&id=<?= $projet['id'] ?>" class="btn btn-sm btn-info">Voir</a>
                         <a href="projet.php?action=edit&id=<?= $projet['id'] ?>" class="btn btn-sm btn-warning">Modifier</a>
