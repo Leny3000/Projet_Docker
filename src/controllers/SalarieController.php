@@ -32,23 +32,23 @@ class SalarieController {
             
             // Créer le client
             if($this->client->create()) {
-                header('Location: client.php');
+                header('Location: salarie.php');
                 exit;
             } else {
                 $error = "Une erreur est survenue lors de la création du client.";
             }
         }
         
-        include_once 'views/client/create.php';
+        include_once 'views/salarie/create.php';
     }
     
     // Afficher les détails d'un client
     public function show($id) {
         $this->client->id = $id;
         if($this->client->readOne()) {
-            include_once 'views/client/show.php';
+            include_once 'views/salarie/show.php';
         } else {
-            echo "Client non trouvé.";
+            echo "Salarié non trouvé.";
         }
     }
     
