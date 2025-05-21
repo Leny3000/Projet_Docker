@@ -15,10 +15,10 @@
                             <a class="nav-link" href="index.php">Accueil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="salarie.php">Salariés</a>
+                            <a class="nav-link" href="salarie.php">Salariés</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="projet.php">Projets</a>
+                            <a class="nav-link active" href="projet.php">Projets</a>
                         </li>
                     </ul>
                 </div>
