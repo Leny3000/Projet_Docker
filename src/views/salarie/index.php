@@ -27,7 +27,7 @@
 
         <h1 class="my-4">Liste des salariés</h1>
         
-        <a href="client.php?action=create" class="btn btn-primary mb-3">Ajouter un salarié</a>
+        <a href="salarie.php?action=create" class="btn btn-primary mb-3">Ajouter un salarié</a>
         
         <table class="table table-striped">
             <thead>
